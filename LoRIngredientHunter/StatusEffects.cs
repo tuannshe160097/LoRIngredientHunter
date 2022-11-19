@@ -6,4 +6,8 @@ using System.Threading.Tasks;
 
 namespace LoRIngredientHunter
 {
+    public class BattleUnitBuf_BloodVeil : BattleUnitBuf
+    {
+
+    }
 }

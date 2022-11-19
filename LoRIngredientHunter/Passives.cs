@@ -9,7 +9,7 @@ namespace LoRIngredientHunter
 {
     public class PassiveAbility_PreciseDrawCut : PassiveAbilityBase
     {
-        public static string Desc = "When inflicting Bleed using combat pages, double the amount inflicted";
+        public static string Desc = "When inflicting Bleed using Combat Pages, double the amount inflicted";
 
         public override int OnGiveKeywordBufByCard(BattleUnitBuf buf, int stack, BattleUnitModel target)
         {
@@ -22,12 +22,9 @@ namespace LoRIngredientHunter
         }
     }
 
-    public class PassiveAbility_ExpertButcher : PassiveAbilityBase
+    public class PassiveAbility_ScarletDevotion : PassiveAbilityBase
     {
-        public static string Desc = "Combat pages with bleed will apply bleed regardless of the clash result. Enemies does not receive stagger damage from combat pages";
-
-        private List<BattleUnitBuf> originalBufs;
-        private List<BattleUnitBuf> originalReadyBufs;
+        public static string Desc = "[On Hit] and [On Clash Win] effects relating to bleed will be triggered regardless of clash result. Cannot inflict any status ailment on enemies other than Bleed. Enemies does not receive Stagger Damage from clashes with this character";
 
         public override void BeforeGiveDamage(BattleDiceBehavior behavior)
         {
@@ -37,10 +34,14 @@ namespace LoRIngredientHunter
             });
         }
 
-        public override void OnStartParrying(BattlePlayingCardDataInUnitModel card)
+        public override int OnGiveKeywordBufByCard(BattleUnitBuf buf, int stack, BattleUnitModel target)
         {
-            originalBufs = card.target.bufListDetail.GetActivatedBufList();
-            originalReadyBufs = card.target.bufListDetail.GetReadyBufList();
+            if (target.faction != owner.faction && buf.bufType != KeywordBuf.Bleeding)
+            {
+                return 0;
+            }
+
+            return stack;
         }
 
         public override void OnDrawParrying(BattleDiceBehavior behavior)
@@ -82,34 +83,14 @@ namespace LoRIngredientHunter
 
         private void ResetBufsToOriginal(BattleDiceBehavior behavior)
         {
-            /*var bufList = behavior.card.target.bufListDetail;
-            var bleed = bufList.GetActivatedBuf(KeywordBuf.Bleeding);
-            var bleedReady = bufList.GetReadyBuf(KeywordBuf.Bleeding);
-            bufList.RemoveBufAll();
 
-            foreach (var buf in originalBufs)
-            {
-                if (buf.bufType != KeywordBuf.Bleeding)
-                {
-                    bufList.AddBuf(buf);
-                }
-                else
-                {
-                    bufList.AddBuf(bleed);
-                }
-            }
-
-            foreach (var buf in originalReadyBufs)
-            {
-                if (buf.bufType != KeywordBuf.Bleeding)
-                {
-                    bufList.AddBuf(buf);
-                }
-                else
-                {
-                    bufList.AddBuf(bleedReady);
-                }
-            }*/
         }
+    }
+
+    public class PassiveAbility_FreshIngredient : PassiveAbilityBase
+    {
+        public static string Desc = "Enemies does not lose Bleed in a clash with this character";
+        
+
     }
 }
