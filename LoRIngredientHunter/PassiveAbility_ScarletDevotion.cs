@@ -1,4 +1,6 @@
-﻿using System;
+﻿using LOR_DiceSystem;
+using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
@@ -7,21 +9,6 @@ using System.Threading.Tasks;
 
 namespace LoRIngredientHunter
 {
-    public class PassiveAbility_PreciseDrawCut : PassiveAbilityBase
-    {
-        public static string Desc = "When inflicting Bleed using Combat Pages, double the amount inflicted";
-
-        public override int OnGiveKeywordBufByCard(BattleUnitBuf buf, int stack, BattleUnitModel target)
-        {
-            if (buf.bufType == KeywordBuf.Bleeding)
-            {
-                return stack;
-            }
-
-            return 0;
-        }
-    }
-
     public class PassiveAbility_ScarletDevotion : PassiveAbilityBase
     {
         public static string Desc = "[On Hit] and [On Clash Win] effects relating to bleed will be triggered regardless of clash result. Cannot inflict any status ailment on enemies other than Bleed. Enemies does not receive Stagger Damage from clashes with this character";
@@ -38,22 +25,20 @@ namespace LoRIngredientHunter
         {
             if (target.faction != owner.faction && buf.bufType != KeywordBuf.Bleeding)
             {
-                return 0;
+                return -stack;
             }
 
-            return stack;
+            return 0;
         }
 
         public override void OnDrawParrying(BattleDiceBehavior behavior)
         {
             ApplyBleedRegardless(behavior);
-            ResetBufsToOriginal(behavior);
         }
 
         public override void OnLoseParrying(BattleDiceBehavior behavior)
         {
             ApplyBleedRegardless(behavior);
-            ResetBufsToOriginal(behavior);
         }
 
         private void ApplyBleedRegardless(BattleDiceBehavior behavior)
@@ -80,17 +65,5 @@ namespace LoRIngredientHunter
         {
             return behavior.Detail == LOR_DiceSystem.BehaviourDetail.Slash || behavior.Detail == LOR_DiceSystem.BehaviourDetail.Penetrate || behavior.Detail == LOR_DiceSystem.BehaviourDetail.Hit;
         }
-
-        private void ResetBufsToOriginal(BattleDiceBehavior behavior)
-        {
-
-        }
-    }
-
-    public class PassiveAbility_FreshIngredient : PassiveAbilityBase
-    {
-        public static string Desc = "Enemies does not lose Bleed in a clash with this character";
-        
-
     }
 }
