@@ -11,7 +11,7 @@ namespace LoRIngredientHunter
 {
     public class PassiveAbility_ScarletDevotion : PassiveAbilityBase
     {
-        public static string Desc = "[On Hit] and [On Clash Win] effects relating to bleed will be triggered regardless of clash result. Cannot inflict any status ailment on enemies other than Bleed. Enemies does not receive Stagger Damage from clashes with this character";
+        public static string Desc = "[On Hit] effects relating to bleed will be triggered regardless of clash result. Cannot inflict any status ailment on enemies other than Bleed. Enemies does not receive Stagger Damage from clashes with this character";
 
         public override void BeforeGiveDamage(BattleDiceBehavior behavior)
         {
@@ -49,13 +49,8 @@ namespace LoRIngredientHunter
                 {
                     if (IsAttackDice(behavior))
                     {
-                        ability.OnWinParrying();
                         ability.OnSucceedAttack();
                         ability.OnSucceedAttack(behavior.card.target);
-                    }
-                    else
-                    {
-                        ability.OnWinParryingDefense();
                     }
                 }
             }

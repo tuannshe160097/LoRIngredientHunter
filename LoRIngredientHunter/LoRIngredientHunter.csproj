@@ -72,6 +72,7 @@
     <Compile Include="DiceCardSelfAbility_RecoverLightUseBloodveil.cs" />
     <Compile Include="DiceCardSelfAbility_UseBloodveilDoubleBleed.cs" />
     <Compile Include="ModInitialization.cs" />
+    <Compile Include="PassiveAbility_AdaptationNPC.cs" />
     <Compile Include="PassiveAbility_Adaptation.cs" />
     <Compile Include="PassiveAbility_GrandFeast.cs" />
     <Compile Include="PassiveAbility_Hunter.cs" />
